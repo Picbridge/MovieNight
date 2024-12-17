@@ -48,7 +48,7 @@ This project leverages a **Rust** frontend, a **.NET** backend, and a **Python**
 
 ## **Image**  
 
--Menu
+- Menu
 
 ![image](https://github.com/user-attachments/assets/f7521d1d-e75e-417d-b8d1-1b3005664961)
 
