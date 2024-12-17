@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css"
+  />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+.page-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(12, 9, 52);
+    color: rgb(201, 201, 201);
+    font-family: Arial, sans-serif;
+}
+
+.logo-container {
+    transform: translateY(10%);
+    text-align: center;
+    width: 100%;
+}
+
+.logo {
+    top: 2rem; 
+    width: 200px;
+    height: 90px;
+    background-color: rgba(255, 255, 255, 0);
+    min-height: 80px;
+    min-width: 180px;
+}
+
+.logo-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 1rem 0;
+}
+
+.auth-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* Add spacing between items */
+    margin-right: 20px; 
+    text-align: right; 
+    width: 100%;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.built-in-button {
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: rgb(201, 201, 201);
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 1.5rem;
+    cursor: pointer;
+}
+
+.built-in-link {
+    color: rgb(201, 201, 201);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.modal {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    backdrop-filter: blur(10px);
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    border-radius: 1.5rem;
+    max-width: 90%;
+    min-width: 30%;
+    text-align: center;
+    color: rgb(201, 201, 201);
+    z-index: 1000;
+}
+
+.floating-window {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    backdrop-filter: blur(10px);
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgb(201, 201, 201);
+    padding: 2rem;
+    border-radius: 1.5rem;
+    z-index: 1000;
+    max-width: 80%;
+    overflow-y: auto;
+    max-height: 80%;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.floating-window-title {
+    margin-top: -0.5rem;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.floating-window-button {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: rgb(201, 201, 201);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.auth-button:hover {
+    opacity: 0.9;
+}
+
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Sidebar Container */
+.sidebar-container {
+    position: absolute; 
+    right: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    border-radius: 1.5rem;
+    backdrop-filter: blur(10px);
+    position: relative; /* Sidebar is relative to its parent */
+    width: 0; /* Closed by default */
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: rgb(201, 201, 201);
+    overflow: hidden; /* Hide content when closed */
+    transition: margin-left 0.3s ease, width 0.3s ease, padding 0.3s ease; /* Smooth animation */
+    z-index: 1; /* Below the toggle button */
+    margin-left: 100%;
+}
+
+.sidebar.open {
+    margin-left: 0; /* Move into view */
+    width: 13rem; 
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 2.5rem;
+    overflow-x: hidden;
+    height: auto;
+}
+
+.sidebar.closed {
+    overflow-x: hidden;
+    padding-top: 2.5rem;
+    height: auto;
+    margin-left: 100%;
+}
+
+.sidebar-content {
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Optional: Hide overflowing text */
+    text-overflow: ellipsis; /* Optional: Add ellipsis for overflowing text */
+}
+
+.sidebar-content-button {
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+    background-color: transparent; /* Keep transparent background */
+    color: rgb(201, 201, 201);
+    padding-bottom: 1rem;
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Change text color and background color on hover */
+.sidebar-content-button:hover {
+    color: white; /* Brighter text color */
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle highlight background */
+}
+
+/* Provide visual feedback on click (active state) */
+.sidebar-content-button:active {
+    color: rgb(150, 150, 150); /* Slightly darker text color */
+    background-color: rgba(255, 255, 255, 0.2); /* More pronounced highlight */
+}
+
+/* Toggle Button */
+.toggle-btn {
+    position: absolute; /* Inside the sidebar container */
+    z-index: 2; /* Above the sidebar */
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    width: 3rem;
+    transform: translateX(1rem);
+    text-align: left;
+    right: 0; /* Positioned to the right when closed */
+}
+
+.sidebar.open .toggle-btn.inside {
+    position: absolute;
+    left: 10px; /* Move to the sidebar's top-left */
+    right: auto; /* Reset right property */
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4rem;
+    padding: 1rem;
+    justify-content: center;
+    text-align: center;
+    position: fixed;
+    width: 100%;;
+}
+
+.recommend-button {
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: rgb(201, 201, 201);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.recommend-button:hover {
+    opacity: 0.9;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Login form label*/
+.form-label {
+    color: rgb(201, 201, 201);
+    font-size: 0.9rem;
+}
+
+/* Login input styling */
+.form-input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: rgb(201, 201, 201);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.movie {
+    color: rgb(231, 231, 231);
+}
+
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.movie-item {
+    margin: 10px;
+    width: 100px;
+    text-align: center;
+}
+
+.movie-item img {
+    width: 100%;
+    height: auto;
+}
+
+.movie-container.horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.movie-container.horizontal .movie {
+    flex: 1;
+    margin: 10px;
+}
+.slider-container {
+    margin: 20px 0;
+}
+
+.slider-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.slider-container input[type="range"] {
+    width: 100%;
+}
+
+
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid rgb(201, 201, 201);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+.history-container {
+    position: absolute;
+    top: 17%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    background-color: rgba(100, 100, 100, 0.3);
+    max-height: 83%; /* Set a maximum height for overflow */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+}
+
+.history-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in WebKit browsers like Chrome and Safari */
+}
+
+
+.recommendation {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* Popup container */
+.popup {
+    background-color: #62649675;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: rgb(201, 201, 201);
+}
+
+/* Popup content layout */
+.popup-content {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.popup-left {
+    flex: 1;
+}
+
+.popup-left img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.popup-right {
+    flex: 2;
+    margin-left: 20px;
+}
+
+.popup-right h2 {
+    margin-top: 0;
+}
+
+.popup-description {
+    margin-top: 10px;
+}
+
+.markdown-viewer {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #eaeaea;
+}
+
+.markdown-viewer ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+.markdown-viewer strong {
+    font-weight: bold;
+}
+
+.markdown-viewer em {
+    font-style: italic;
+}
+
+.markdown-viewer br {
+    display: block;
+    margin-top: 8px;
+}
+.reasoning {
+    white-space: pre-wrap;
+}
+/* Responsive Behavior */
+@media (min-width: 768px) {
+    .sidebar {
+        height: calc(100% - 20px); /* Account for toggle button's initial position */
+        top: 0; /* Leave space above for the toggle button */
+    }
+}
+
+/* Responsive Behavior for Mobile */
+@media (max-width: 767px) {
+    .sidebar {
+        height: 100%;
+        top: 0;
+    }
+
+    .toggle-btn {
+        z-index: 1100; /* Ensure toggle is on top of mobile sidebar */
+    }
+}
+
+/* Adjustments for mobile view */
+@media (max-width: 600px) {
+    .popup-content {
+        flex-direction: column;
+    }
+
+    .popup-right {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+    </style>
+    <title>Movie Night</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
+    <script type="module">
+        console.log("Starting Yew app initialization");
+        import init from './dist/frontend.js';
+        init().then(() => {
+            console.log("Yew app started successfully");
+        }).catch((error) => {
+            console.error("Failed to start Yew app", error);
+        });
+    </script>
+</body>
+</html>
