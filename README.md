@@ -49,15 +49,19 @@ This project leverages a **Rust** frontend, a **.NET** backend, and a **Python**
 ## **Image**  
 
 -Menu
+
 ![image](https://github.com/user-attachments/assets/f7521d1d-e75e-417d-b8d1-1b3005664961)
 
 - Random Movie
+  
 ![image](https://github.com/user-attachments/assets/85ef57d5-5bc7-4da5-85be-6d46ea688a59)
 
 - History
+  
 ![image](https://github.com/user-attachments/assets/884a98c0-3f9a-4a02-995e-95d3f0dd882e)
 
 - Recommendation
+  
 ![image](https://github.com/user-attachments/assets/11df7017-070c-45ae-9647-632654d92467)
 
 ![image](https://github.com/user-attachments/assets/f2e98add-4e49-40bc-b6c8-5fd6034a1093)
