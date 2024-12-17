@@ -1,0 +1,31 @@
+# Exclude the llama.cpp directory
+llama.cpp/
+
+# Ignore Python cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+# Ignore virtual environment
+venv/
+
+# Ignore version control and related files
+.git/
+.gitignore
+
+# Ignore Docker-related files
+.dockerignore
+Dockerfile
+docker-compose*
+
+# Ignore unnecessary configuration files
+*.dbmdl
+*.jfm
+*.env
+*.settings
+*.project
+
+# Ignore IDE/editor-specific files
+.vscode/
+.vs/
