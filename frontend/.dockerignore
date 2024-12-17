@@ -1,0 +1,38 @@
+# Exclude Rust build artifacts
+target/
+*.rs.bk
+Cargo.lock.bk
+
+# Exclude dependency directories
+node_modules/
+**/node_modules/
+
+# Exclude build artifacts
+build/
+dist/
+out/
+tmp/
+temp/
+
+# Exclude logs
+*.log
+
+# Exclude version control directories
+.git/
+.svn/
+.hg/
+
+# Exclude environment files (if not needed in the image)
+.env
+.env.local
+
+# Exclude Docker-related files if not needed inside the image
+Dockerfile
+docker-compose.yml
+
+# Exclude OS-specific files
+.DS_Store
+Thumbs.db
+
+# Exclude large archive files
+frontend.tar
